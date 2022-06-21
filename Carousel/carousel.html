@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="images/e-commerce-icon-icon.png" rel="icon" type="image/x-icon">
+    <title>My Carousel</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>My Carousel</h1>
+    </header>
+    <section class="container slider row">
+        <div class="slides-parent">
+            <div class="pictures ">
+                <img src="images/bmw_m5.jpg" >
+            </div>
+            <div class="pictures">
+                <img src="images/porsche_911.jpg" >
+            </div>
+            <div class="pictures">
+                <img src="images/lamborghini_aventador.jpg" >
+            </div>
+            <div class="pictures">
+                <img src="images/bmw.png" >
+            </div>
+        </div>
+            <div class="text">
+                <span class="dot active" data-arrow="dot" data-index="0"></span>
+                <span class="dot" data-arrow="dot" data-index="1"></span>
+                <span class="dot" data-arrow="dot" data-index="2"></span>
+                <span class="dot" data-arrow="dot" data-index="3"></span>
+            </div>
+            <a class="prev" data-arrow="prev">&#10094;</a>
+            <a class="next" data-arrow="next">&#10095;</a>
+        <div class="center">
+            <button id ="play" class="btn" type="submit">Play</button>
+            <button id ="stop" class="btn" type="submit">Stop</button>
+        </div>
+    </section>
+    <script src="js/script.js"></script>
+</body>
+</html>
