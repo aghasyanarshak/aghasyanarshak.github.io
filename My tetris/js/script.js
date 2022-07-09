@@ -36,13 +36,14 @@ let myFigures = {
     ],
 };
 const board = document.querySelector('.board');
-const pointsElem = document.getElementById('points');
-const levelElem = document.getElementById('level');
-const nextFigureElem = document.getElementById('next_Figure');
-const startBtn = document.getElementById('start');
-const pausetBtn = document.getElementById('pause');
-const gameOver = document.getElementById('gameOver');
+let pointsElem = document.getElementById('points');
+let levelElem = document.getElementById('level');
+let nextFigureElem = document.getElementById('next_Figure');
+let startBtn = document.getElementById('start');
+let pausetBtn = document.getElementById('pause');
+let gameOver = document.getElementById('gameOver');
 let isPaused = true;
+let isStart = false;
 let playfield = [
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
@@ -158,11 +159,11 @@ function rotateFigure() {
     activeFigure.shape = activeFigure.shape[0].map((val, index)=>
     activeFigure.shape.map((row)=>row[index]).reverse()
     );
-    if(hasCollisions()){
+    if(hasMistakes()){
         activeFigure.shape = prevFigureState;
     }
 }
-function hasCollisions() {
+function hasMistakes() {
     for (let y = 0; y < activeFigure.shape.length; y++) {
         for (let x = 0; x < activeFigure.shape[y].length; x++) {
             if(activeFigure.shape[y][x] &&
@@ -238,12 +239,12 @@ function fixFigure() {
 }
 function moveDown() {
     activeFigure.y +=1;
-    if(hasCollisions()){
+    if(hasMistakes()){
         activeFigure.y -= 1;
         fixFigure();
         removeFullLine();
         activeFigure = nextFigure;
-        if(hasCollisions()){
+        if(hasMistakes()){
             restart();
             // alert('over')
         }
@@ -278,12 +279,14 @@ function restart() {
     ];
     draw();
     gameOver.style.display = 'block';
+    isStart = false;
+    
 }
 
 function dropFifure(){
     for (let y = activeFigure.y; y < playfield.length; y++){
             activeFigure.y +=1;
-            if(hasCollisions()){
+            if(hasMistakes()){
                 activeFigure.y -=1;
                 break;
             }
@@ -296,17 +299,17 @@ window.addEventListener('keydown', (e) => {
             moveDown();
         }else if(e.key === 'ArrowLeft'){
             activeFigure.x -=1;
-            if(hasCollisions()){
+            if(hasMistakes()){
                 activeFigure.x +=1;
             }
         }else if(e.key === 'ArrowRight'){
             activeFigure.x +=1;
-            if(hasCollisions()){
+            if(hasMistakes()){
                 activeFigure.x -=1;
             }
         }else if(e.key === 'ArrowUp'){
             rotateFigure();
-        }else if(e.code === 'Space'){
+        }else if(e.key === " "){
             // console.log('test')
             dropFifure();
         }
@@ -320,6 +323,7 @@ function updateGame(){
         addActiveFigure();
         draw();
         showNextFigure();
+        
     }
     
 }
@@ -327,18 +331,31 @@ pausetBtn.addEventListener('click',(e) =>{
     if(e.target.innerHTML === 'Pause'){
         e.target.innerHTML = 'Play';
         clearTimeout(gameTimerId);
+        
     }else{
         e.target.innerHTML = 'Pause';
         gameTimerId = setTimeout(startGame,possibleLevels[currentLevel].speed); 
     }
     isPaused = !isPaused;
+    e.target.blur();
 });
 
 startBtn.addEventListener('click',(e) =>{
     // e.target.innerHTML = 'Start again';
-    isPaused = false;
-    gameTimerId = setTimeout(startGame,possibleLevels[currentLevel].speed);
-    gameOver.style.display ='none';
+    if( isStart === false ) {
+        score = 0;
+        currentLevel = 1;
+        pointsElem.innerHTML =score;
+        levelElem.innerHTML = currentLevel;
+        isPaused = false;
+        gameTimerId = setTimeout(startGame,possibleLevels[currentLevel].speed);
+        gameOver.style.display ='none';
+        isStart = true;
+        // score = 0;
+        // currentLevel = 1;    
+        e.target.blur();
+    }
+  
 });
 
 pointsElem.innerHTML = score;
@@ -355,5 +372,5 @@ function startGame() {
         gameTimerId = setTimeout(startGame,possibleLevels[currentLevel].speed);
     } 
 }
-// setTimeout(startGame,possibleLevels[currentLevel].speed);
+
 

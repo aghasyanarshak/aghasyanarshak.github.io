@@ -41,14 +41,16 @@ body{
 .cell{
     width: 30px;
     height: 30px;
-    border:1px solid silver;
+    border:1px solid transparent;
     display: inline-block;
 }
 .movingCell{
     background-color:blue;
+    border-color: #fff;
 }
 .fixedCell{
     background-color: green;
+    border-color: #fff;
 }
 #next_Figure{
     font-size: 0;
